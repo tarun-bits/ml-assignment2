@@ -1,6 +1,11 @@
 # eda module is responsible for loading eda set and performing exploratory eda analysis (EDA) tasks
-
+import numpy as np
 import pandas as pd
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+pd.set_option('display.max_columns', None)
 
 class Dataset:
 
@@ -13,12 +18,92 @@ class Dataset:
         except Exception as e:
            raise e
 
+    @property
+    def data_frame(self) -> pd.DataFrame:
+        """Get the loaded DataFrame."""
+        return self.data
+
+    @property
+    def non_numerical_columns(self) -> list:
+        """Get a list of non-numerical (categorical) columns in the DataFrame."""
+        if self.data is None:
+            print("No data loaded.")
+            return []
+        non_numerical_cols = self.data.select_dtypes(exclude=['float64']).columns.tolist()
+        return non_numerical_cols
+
+    @property
+    def numerical_columns(self) -> list:
+        """Get a list of non-numerical (categorical) columns in the DataFrame."""
+        if self.data is None:
+            print("No data loaded.")
+            return []
+        non_numerical_cols = self.data.select_dtypes(exclude=['object']).columns.tolist()
+        return non_numerical_cols
+
+    @property
+    def get_target_column(self) -> str:
+        """Get a list of target columns in the DataFrame."""
+        if self.data is None:
+            print("No data loaded.")
+            return []
+        return "NObeyesdad"
+
+
+    def visualize_data(self):
+        """Visualize the DataFrame using basic plots."""
+        if self.data is None:
+            print("No data loaded.")
+            return
+
+        plt.figure(figsize=(8, 4))
+        sns.countplot(data=self.data_frame, x=self.get_target_column)
+        plt.title("Target Class Distribution")
+        plt.xticks(rotation=45)
+        plt.show()
+
+        """  for col in self.numerical_columns:
+            plt.figure(figsize=(8, 4))
+            sns.boxplot(data=self.data_frame, x=self.get_target_column, y=col)
+            plt.title(f"{col} vs {self.get_target_column}")
+            plt.xticks(rotation=45)
+            plt.show()"""
+
+        plt.figure(figsize=(15, 6))
+        sns.boxplot(data=self.data_frame[self.numerical_columns])
+        plt.xticks(rotation=90)
+        plt.title("Outlier Detection in Numerical Features")
+        plt.show()
+
+    def update_data_frame(self, new_data: pd.DataFrame):
+        """Update the DataFrame with new data.
+
+        Args:
+            new_data: A pandas DataFrame to replace the current data.
+        """
+        self.data = new_data
+        print("DataFrame updated successfully.")
+
     def show_data(self):
+        """Print the first 5 rows of the DataFrame."""
+        if self.data is None:
+            print("No data loaded.")
+            return
+        print(f"First 5 rows of {self.file_path}")
         print(self.data.head(5))
 
     def show_unique_values(self):
-        """loops through all columns in self.data and print unique values for each column
-        """
+        """Print unique values for non-numeric (categorical) columns only."""
+        if self.data is None:
+            print("No data loaded.")
+            return
+
+        print("Unique values for non-numeric (categorical) columns:\n")
+
+        non_numeric_cols = self.data.select_dtypes(exclude=['float64']).columns
+        if len(non_numeric_cols) == 0:
+            print("No non-numeric (categorical) columns found.")
+            return
 
         for col in non_numeric_cols:
             print(f"Unique values in column '{col}': {self.data[col].unique()}")
@@ -40,5 +125,11 @@ class Dataset:
             print(self.data.describe())
             print("\nMissing Values:")
             print(self.data.isnull().sum())
+            print(f"Duplicate data present: {self.data.duplicated().sum() != 0}")
+            if self.data.duplicated().sum() != 0:
+                print(f"Number of duplicate rows: {self.data.duplicated().sum()}")
+                print("Duplicate rows:")
+                print(self.data[self.data.duplicated()])
+
         else:
             print("No eda to summarize.")

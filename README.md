@@ -45,3 +45,42 @@ Following data set is used for this assignment:
 - Target Variable Description
     - NObeyesdad (Obesity Level) - Target Variable
     - Values: Insufficient Weight, Normal Weight, Overweight Level I, Overweight Level II, Obesity Type I, Obesity Type II, Obesity Type III
+
+Following features/target have been found to be categorical variables with unique values:
+Unique values in column 'Gender': ['Female' 'Male']
+Unique values in column 'family_history_with_overweight': ['yes' 'no']
+Unique values in column 'FAVC': ['no' 'yes']
+Unique values in column 'CAEC': ['Sometimes' 'Frequently' 'Always' 'no']
+Unique values in column 'SMOKE': ['no' 'yes']
+Unique values in column 'SCC': ['no' 'yes']
+Unique values in column 'CALC': ['no' 'Sometimes' 'Frequently' 'Always']
+Unique values in column 'MTRANS': ['Public_Transportation' 'Walking' 'Automobile' 'Motorbike' 'Bike']
+Unique values in column 'NObeyesdad': ['Normal_Weight' 'Overweight_Level_I' 'Overweight_Level_II'
+ 'Obesity_Type_I' 'Insufficient_Weight' 'Obesity_Type_II'
+ 'Obesity_Type_III']
+
+Statistical Summary of Numerical Features:
+
+| Statistic | Age | Height | Weight | FCVC | NCP | CH2O | FAF | TUE |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| count | 2087.000000 | 2087.000000 | 2087.000000 | 2087.000000 | 2087.000000 | 2087.000000 | 2087.000000 | 2087.000000 |
+| mean  | 24.353090 | 1.702674 | 86.858730 | 2.421466 | 2.701179 | 2.004749 | 1.012812 | 0.663035 |
+| std   | 6.368801 | 0.093186 | 26.190847 | 0.534737 | 0.764614 | 0.608284 | 0.853475 | 0.608153 |
+| min   | 14.000000 | 1.450000 | 39.000000 | 1.000000 | 1.000000 | 1.000000 | 0.000000 | 0.000000 |
+| 25%   | 19.915937 | 1.630178 | 66.000000 | 2.000000 | 2.697467 | 1.590922 | 0.124505 | 0.000000 |
+| 50%   | 22.847618 | 1.701584 | 83.101100 | 2.396265 | 3.000000 | 2.000000 | 1.000000 | 0.630866 |
+| 75%   | 26.000000 | 1.769491 | 108.015907 | 3.000000 | 3.000000 | 2.466193 | 1.678102 | 1.000000 |
+| max   | 61.000000 | 1.980000 | 173.000000 | 3.000000 | 4.000000 | 3.000000 | 3.000000 | 2.000000 |
+
+
+Data visualization:
+
+![target_class_distribution.png](data/target_class_distribution.png)
+
+Conclusions from EDA:
+- There are no missing values in the dataset.
+- Categorical features need to be encoded before feeding into ML models.
+- Target variable is multi-class in nature with 7 unique classes.
+- The data contains 17 attributes and 2111 records
+- Data seems to be having near normal distribution as mean and median values are close to each other.
+- Target class is also balanced with each class having decent number of records.
