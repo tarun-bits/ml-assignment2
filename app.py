@@ -3,6 +3,7 @@ import os
 from sklearn.metrics import ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
+from data.data_split import target_col
 from eda import eda
 from model.test import model_evaluate
 
@@ -23,9 +24,11 @@ uploaded_file = st.file_uploader("Upload CSV test file. Get it from gitrepo data
 dataset_path = st.text_input("Or enter CSV filepath (use this value: data/ObesityDataSet_test.csv)")
 
 dataset = None
+target_col = None
 if uploaded_file is not None:
     try:
         dataset = eda.Dataset(uploaded_file)
+        target_col = dataset.get_target_column
         st.success("Loaded dataset from uploaded file")
     except Exception as e:
         st.error(f"Could not read uploaded CSV: {e}")
@@ -33,6 +36,7 @@ elif dataset_path:
     if os.path.exists(dataset_path):
         try:
             dataset = eda.Dataset(dataset_path)
+            target_col = dataset.get_target_column
             st.success(f"Loaded dataset from `{dataset_path}`")
         except Exception as e:
             st.error(f"Failed to read CSV at `{dataset_path}`: {e}")
@@ -48,9 +52,10 @@ st.subheader("Model selection")
 model_name = st.selectbox("Select model to evaluate", list(MODEL_REGISTRY.keys()))
 model_path = MODEL_REGISTRY.get(model_name)
 
+
 st.markdown(f"Using model file: `{model_path}`")
 
-target_col = dataset.get_target_column
+
 
 # Evaluate button
 if st.button("Evaluate"):
