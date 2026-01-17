@@ -3,7 +3,6 @@ import os
 from sklearn.metrics import ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
-from data.data_split import target_col
 from eda import eda
 from model.test import model_evaluate
 
