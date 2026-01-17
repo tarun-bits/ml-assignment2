@@ -113,6 +113,13 @@ class Dataset:
         print(f"First 5 rows of {self.file_path}")
         print(self.data.head(5))
 
+    def head(self, n: int = 5) -> pd.DataFrame:
+        """Return the first n rows of the DataFrame."""
+        if self.data is None:
+            print("No data loaded.")
+            return pd.DataFrame()
+        return self.data.head(n)
+
     def show_unique_values(self):
         """Print unique values for non-numeric (categorical) columns only."""
         if self.data is None:
