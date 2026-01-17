@@ -1,4 +1,6 @@
 # eda module is responsible for loading eda set and performing exploratory eda analysis (EDA) tasks
+from copy import deepcopy
+
 import numpy as np
 import pandas as pd
 
@@ -23,22 +25,28 @@ class Dataset:
         """Get the loaded DataFrame."""
         return self.data
 
-    @property
-    def non_numerical_columns(self) -> list:
+    def non_numerical_columns(self, exclude_target: bool = False) -> list:
         """Get a list of non-numerical (categorical) columns in the DataFrame."""
         if self.data is None:
             print("No data loaded.")
             return []
-        non_numerical_cols = self.data.select_dtypes(exclude=['float64']).columns.tolist()
+        data = deepcopy(self.data)
+        if exclude_target:
+            data = data.drop(columns=[self.get_target_column])
+
+        non_numerical_cols = data.select_dtypes(exclude=['float64']).columns.tolist()
         return non_numerical_cols
 
-    @property
-    def numerical_columns(self) -> list:
+
+    def numerical_columns(self, exclude_target: bool = False) -> list:
         """Get a list of non-numerical (categorical) columns in the DataFrame."""
         if self.data is None:
             print("No data loaded.")
             return []
-        non_numerical_cols = self.data.select_dtypes(exclude=['object']).columns.tolist()
+        data = deepcopy(self.data)
+        if exclude_target:
+            data = data.drop(columns=[self.get_target_column])
+        non_numerical_cols = data.select_dtypes(exclude=['object']).columns.tolist()
         return non_numerical_cols
 
     @property
@@ -62,15 +70,28 @@ class Dataset:
         plt.xticks(rotation=45)
         plt.show()
 
-        """  for col in self.numerical_columns:
-            plt.figure(figsize=(8, 4))
-            sns.boxplot(data=self.data_frame, x=self.get_target_column, y=col)
-            plt.title(f"{col} vs {self.get_target_column}")
-            plt.xticks(rotation=45)
-            plt.show()"""
+        cols = 2
+        num_cols = len(self.numerical_columns())
+        if num_cols == 0:
+            return
+        rows = int(np.ceil(num_cols / cols))
+        fig, axes = plt.subplots(rows, cols, figsize=(cols * 6, rows * 4), squeeze=False)
+        axes_flat = axes.flatten()
 
+        for i, col in enumerate(self.numerical_columns()):
+            ax = axes_flat[i]
+            sns.boxplot(data=self.data_frame, x=self.get_target_column, y=col, ax=ax)
+            ax.set_title(f"{col} vs {self.get_target_column}")
+            ax.tick_params(axis='x', rotation=45)
+
+        # hide any unused subplots
+        for j in range(num_cols, rows * cols):
+            axes_flat[j].set_visible(False)
+
+        plt.tight_layout()
+        plt.show()
         plt.figure(figsize=(15, 6))
-        sns.boxplot(data=self.data_frame[self.numerical_columns])
+        sns.boxplot(data=self.data_frame[self.numerical_columns()])
         plt.xticks(rotation=90)
         plt.title("Outlier Detection in Numerical Features")
         plt.show()
