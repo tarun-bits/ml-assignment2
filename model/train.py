@@ -1,6 +1,7 @@
 from eda import eda
 from helpers import TrainTestSplit
 from model.logistic_regression import model as lr_model
+from model.decision_tree_classifier import model as dtc_model
 from preprocessor.drop_duplicates import drop_duplicates
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -62,3 +63,15 @@ if __name__ == "__main__":
     logistic_regression_metrics = logistic_regression_pipeline.model_metrics(model)
     print(f"Logistric Regression Model Metrics: {logistic_regression_metrics}" )
     logistic_regression_pipeline.save_pkl_model(model)
+
+    # Create Decision Tree model
+    decision_tree_pipeline = dtc_model.DecisionTreeClassifierPipeline(
+        preprocessor=preprocessor,
+        train_test_split=trainTestSplit
+    )
+    model = decision_tree_pipeline.train_model()
+    accuracy = decision_tree_pipeline.evaluate_model(model)
+    print(f"Decision Tree Model Accuracy: {accuracy:.4f}")
+    decision_tree_metrics = decision_tree_pipeline.model_metrics(model)
+    print(f"Decision Tree Model Metrics: {decision_tree_metrics}" )
+    decision_tree_pipeline.save_pkl_model(model)

@@ -100,3 +100,10 @@ Conclusions from EDA:
 
 ### Confusion Matrix
 ![logistic_regression_confusion_matrix.png](data/logistic_regression_confusion_matrix.png)
+
+## Decision Tree Classifier
+- Got 83% accuracy with max depth 5
+- Got 92% accuracy with max depth 10
+- Default criterion gini was used but we dont have bianry split, using entropy
+- 81% accuracy with 5
+- 94% accuracy with 10
