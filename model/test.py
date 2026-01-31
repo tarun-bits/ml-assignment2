@@ -3,6 +3,7 @@ import pickle
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, precision_score, recall_score, \
     f1_score, matthews_corrcoef, roc_auc_score
+from sklearn.preprocessing import LabelEncoder
 
 from eda.eda import Dataset
 
@@ -29,6 +30,12 @@ class model_evaluate:
                 ds = self.dataset.data
                 X_test = ds.drop(columns=[self.dataset.get_target_column])
                 y_test = ds[self.dataset.get_target_column]
+                label_encoder = LabelEncoder()
+                label_encoder.fit(['Insufficient_Weight', 'Normal_Weight', 'Obesity_Type_I',
+                              'Obesity_Type_II', 'Obesity_Type_III', 'Overweight_Level_I',
+                              'Overweight_Level_II'])
+
+                y_test = label_encoder.transform(y_test)
                 y_pred = model.predict(X_test)
                 y_pred_proba = model.predict_proba(X_test)
                 cm = confusion_matrix(y_test, y_pred)

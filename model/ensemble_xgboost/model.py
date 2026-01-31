@@ -17,7 +17,6 @@ class XGBoostEnsembleModel:
             max_depth=10,
             learning_rate=0.1,
             random_state=42,
-            use_label_encoder=False,
             eval_metric='logloss',
             n_jobs=-1
         )
