@@ -58,17 +58,19 @@ Following data set is used for this assignment:
     - Values: Insufficient Weight, Normal Weight, Overweight Level I, Overweight Level II, Obesity Type I, Obesity Type II, Obesity Type III
 
 Following features/target have been found to be categorical variables with unique values:
-Unique values in column 'Gender': ['Female' 'Male']
-Unique values in column 'family_history_with_overweight': ['yes' 'no']
-Unique values in column 'FAVC': ['no' 'yes']
-Unique values in column 'CAEC': ['Sometimes' 'Frequently' 'Always' 'no']
-Unique values in column 'SMOKE': ['no' 'yes']
-Unique values in column 'SCC': ['no' 'yes']
-Unique values in column 'CALC': ['no' 'Sometimes' 'Frequently' 'Always']
-Unique values in column 'MTRANS': ['Public_Transportation' 'Walking' 'Automobile' 'Motorbike' 'Bike']
-Unique values in column 'NObeyesdad': ['Normal_Weight' 'Overweight_Level_I' 'Overweight_Level_II'
- 'Obesity_Type_I' 'Insufficient_Weight' 'Obesity_Type_II'
- 'Obesity_Type_III']
+
+| Column | Unique values |
+|---|---|
+| Gender | `['Female', 'Male']` |
+| family_history_with_overweight | `['yes', 'no']` |
+| FAVC | `['no', 'yes']` |
+| CAEC | `['Sometimes', 'Frequently', 'Always', 'no']` |
+| SMOKE | `['no', 'yes']` |
+| SCC | `['no', 'yes']` |
+| CALC | `['no', 'Sometimes', 'Frequently', 'Always']` |
+| MTRANS | `['Public_Transportation', 'Walking', 'Automobile', 'Motorbike', 'Bike']` |
+| NObeyesdad | `['Normal_Weight', 'Overweight_Level_I', 'Overweight_Level_II', 'Obesity_Type_I', 'Insufficient_Weight', 'Obesity_Type_II', 'Obesity_Type_III']` |
+
 
 Statistical Summary of Numerical Features:
 
