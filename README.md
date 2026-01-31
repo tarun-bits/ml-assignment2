@@ -16,7 +16,7 @@ Following data set is used for this assignment:
   - https://archive.ics.uci.edu/dataset/544/estimation+of+obesity+levels+based+on+eating+habits+and+physical+condition
   - Further more https://www.sciencedirect.com/science/article/pii/S2352340919306985?via%3Dihub this was referred to understand the data set and its features.
 - This dataset include data for the estimation of obesity levels in individuals from the countries of Mexico, Peru and Colombia, based on their eating habits and physical condition. The data contains 17 attributes and 2111 records, the records are labeled with the class variable NObesity (Obesity Level), that allows classification of the data using the values of Insufficient Weight, Normal Weight, Overweight Level I, Overweight Level II, Obesity Type I, Obesity Type II and Obesity Type III. 77% of the data was generated synthetically using the Weka tool and the SMOTE filter, 23% of the data was collected directly from users through a web platform.
-- Dataset: data/ObesityDataSet_raw_and_data_sinthetic.csv 
+- Dataset: data/original_data/ObesityDataSet_raw_and_data_sinthetic.csv
 - To enable standalone testing via streamlit, we first splitted original data into 2 parts 80% training and 20% test
 - Training data: data/ObesityDataSet_train.csv
 - Test data: data/ObesityDataSet_test.csv
