@@ -24,6 +24,7 @@ MODEL_REGISTRY = {
 
 # 1. Dataset input: upload or path
 st.subheader("Test dataset")
+st.markdown("Download the test dataset: [ObesityDataSet_test.csv](https://github.com/tarun-bits/ml-assignment2/blob/main/data/ObesityDataSet_test.csv)")
 uploaded_file = st.file_uploader("Upload CSV test file. Get it from gitrepo data/ObesityDataSet_test.csv", type=["csv"])
 dataset_path = st.text_input("Or enter CSV filepath (use this value: data/ObesityDataSet_test.csv)")
 
