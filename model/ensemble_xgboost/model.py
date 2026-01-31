@@ -1,5 +1,5 @@
 from pathlib import Path
-import sklearn.neighbors as neighbors
+from xgboost import XGBClassifier
 from matplotlib import pyplot as plt
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
@@ -9,38 +9,49 @@ import pickle
 from helpers import TrainTestSplit
 
 
-class KnnClassifierPipeline:
-    def __init__(
-        self,
-        preprocessor: ColumnTransformer,
-        train_test_split: TrainTestSplit,
-    ):
+class XGBoostEnsembleModel:
+    def __init__(self, preprocessor: ColumnTransformer, train_test_split: TrainTestSplit):
 
-        self.model_lib = neighbors.KNeighborsClassifier(
-            n_neighbors=5, weights="uniform", metric="minkowski", n_jobs=-1
+        self.model_lib = XGBClassifier(
+            n_estimators=100,
+            max_depth=10,
+            learning_rate=0.1,
+            random_state=42,
+            use_label_encoder=False,
+            eval_metric='logloss',
+            n_jobs=-1
         )
         self.preprocessor = preprocessor
         self.trainTestSplit = train_test_split
 
     def setup_pipeline(self):
-        model = Pipeline(steps=[("preprocess", self.preprocessor), ("clf", self.model_lib)])
+        model = Pipeline(steps=[
+            ("preprocess", self.preprocessor),
+            ("clf", self.model_lib)
+        ])
         return model
 
     def train_model(self):
         model = self.setup_pipeline()
-        model.fit(self.trainTestSplit.X_train, self.trainTestSplit.y_train)
+        model.fit(
+            self.trainTestSplit.X_train,
+            self.trainTestSplit.y_train
+        )
         return model
 
     def evaluate_model(self, model):
-        accuracy = model.score(self.trainTestSplit.X_test, self.trainTestSplit.y_test)
+        accuracy = model.score(
+            self.trainTestSplit.X_test,
+            self.trainTestSplit.y_test
+        )
         return accuracy
 
     def model_metrics(self, model):
         y_pred = model.predict(self.trainTestSplit.X_test)
-        # KNeighborsClassifier supports predict_proba; handle gracefully if not available
+
         try:
             y_pred_proba = model.predict_proba(self.trainTestSplit.X_test)
-            auc_ovr = roc_auc_score(self.trainTestSplit.y_test, y_pred_proba, multi_class="ovr")
+            auc_ovr = roc_auc_score(self.trainTestSplit.y_test, y_pred_proba, multi_class='ovr')
         except Exception:
             y_pred_proba = None
             auc_ovr = None
@@ -49,13 +60,13 @@ class KnnClassifierPipeline:
         cm_display = ConfusionMatrixDisplay(confusion_matrix=cm)
         cm_display.plot()
         plt.show()
+
         accuracy = accuracy_score(self.trainTestSplit.y_test, y_pred)
-        precision = precision_score(
-            self.trainTestSplit.y_test, y_pred, average="weighted", zero_division=0
-        )
+        precision = precision_score(self.trainTestSplit.y_test, y_pred, average="weighted", zero_division=0)
         recall = recall_score(self.trainTestSplit.y_test, y_pred, average="weighted", zero_division=0)
         f1 = f1_score(self.trainTestSplit.y_test, y_pred, average="weighted", zero_division=0)
         mcc_score = matthews_corrcoef(self.trainTestSplit.y_test, y_pred)
+
         print(f"MCC Score: {mcc_score}")
 
         return {
@@ -64,11 +75,10 @@ class KnnClassifierPipeline:
             "recall": recall,
             "f1": f1,
             "AUC": auc_ovr,
-            "MCC": mcc_score,
+            "MCC": mcc_score
         }
 
-
     def save_pkl_model(self, model):
-        file_path = Path(__file__).with_name("knn_model.pkl")
-        with open(file_path, "wb") as f:
+        file_path = Path(__file__).with_name('xgboost_model.pkl')
+        with open(file_path, 'wb') as f:
             pickle.dump(model, f)

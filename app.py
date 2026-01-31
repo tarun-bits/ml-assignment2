@@ -15,6 +15,11 @@ st.markdown(
 # Model registry: map display name -> pkl path
 MODEL_REGISTRY = {
     "Logistic Regression": "model/logistic_regression/logistic_regression_model.pkl",
+    "Decision Tree": "model/decision_tree_classifier/decision_tree_model.pkl",
+    "kNN": "model/knn_classifier/knn_model.pkl",
+    "Naive Bayes (Gaussian)": "model/naive_bayes_gaussian/gaussian_nb_model.pkl",
+    "Random Forest ( Ensemble )": "model/ensemble_random_forest/random_forest_model.pkl",
+    "XGBoost ( Ensemble )": "model/ensemble_xgboost/xgboost_model.pkl"
 }
 
 # 1. Dataset input: upload or path

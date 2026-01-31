@@ -106,4 +106,4 @@ Conclusions from EDA:
 - Got 92% accuracy with max depth 10
 - Default criterion gini was used but we dont have bianry split, using entropy
 - 81% accuracy with 5
-- 94% accuracy with 10
+- 94% accuracy with 10. going with this value
