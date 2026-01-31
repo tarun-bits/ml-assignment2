@@ -1,7 +1,14 @@
 # ml-assignment2
 
 ## Problem statement
-The goal of this assignment is to build and evaluate machine learning models for a given dataset. 
+The goal of this assignment is to build and evaluate machine learning models for a given dataset. Following 
+machine learning algorithms will be used for model training:
+- Logistic Regression
+- Decision Tree Classifier
+- K-Nearest Neighbors Classifier
+- Naive Bayes Classifier - GaussianNB
+- Ensemble Model - Random Forest Classifier
+- Ensemble Model - XGBoost Classifier
 
 ## Dataset description
 Following data set is used for this assignment:
@@ -77,7 +84,7 @@ Statistical Summary of Numerical Features:
 | max   | 61.000000 | 1.980000 | 173.000000 | 3.000000 | 4.000000 | 3.000000 | 3.000000 | 2.000000 |
 
 
-Data visualization:
+Target visualization:
 
 ![target_class_distribution.png](data/target_class_distribution.png)
 
@@ -91,19 +98,38 @@ Conclusions from EDA:
 - We notice some outliers but since we are using logistic regression and decision tree models, 
 - we can avoid treating them as these models are not much affected by outliers.
 
-# Model training observations
-## Logistic regression
-- 100 Iterations unable to converge
-- 10000 Iterations able to converge with accuracy 89.71, default C = 1
-- 10000 Iterations able to converge with accuracy 94.26, C = 10, hence regularization value as 0.1
-- For evaluation metrics we choose to go with OVR strategy as we have 7 multiple classes
+# Models used
+- Logistic Regression
+- Decision Tree Classifier
+- K-Nearest Neighbors Classifier
+- Naive Bayes Classifier - GaussianNB
+- Ensemble Model - Random Forest Classifier
+- Ensemble Model - XGBoost Classifier
 
-### Confusion Matrix
-![logistic_regression_confusion_matrix.png](data/logistic_regression_confusion_matrix.png)
+# Model comparison table
 
-## Decision Tree Classifier
-- Got 83% accuracy with max depth 5
-- Got 92% accuracy with max depth 10
-- Default criterion gini was used but we dont have bianry split, using entropy
-- 81% accuracy with 5
-- 94% accuracy with 10. going with this value
+| ML Model Name                      | Accuracy |   AUC | Precision | Recall |    F1 |   MCC |
+|------------------------------------|---------:|------:|----------:|-------:|------:|------:|
+| Logistic Regression                |     0.92 | 0.992 |      0.92 |   0.92 |  0.92 |  0.91 |
+| Decision Tree       |    0.934 |  0.96 |     0.935 | 0.9338 | 0.933 | 0.923 |
+| kNN                                |    0.808 | 0.968 |     0.806 |  0.808 | 0.798 | 0.779 |
+| Naive Bayes |    0.506 | 0.833 |     0.528 |  0.506 | 0.457 | 0.446 |
+| Random Forest ( Ensemble )         |    0.938 | 0.993 |     0.945 |  0.938 |  0.94 | 0.929 |
+| XGBoost ( Ensemble )               |    0.945 | 0.997 |     0.947 |  0.945 | 0.946 |  0.94 |
+
+# Model observations table
+| ML Model Name                      | Observations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Logistic Regression                | <ol><li>100 Iterations unable to converge.</li><li>10000 Iterations able to converge with accuracy 89.71, default C = 1.</li><li>10000 Iterations able to converge with accuracy 92, C = 10, hence regularization value as 0.1.</li><li>For evaluation metrics we choose to go with OVR strategy as we have 7 multiple classes.</li><li>Decent performance despite being a linear model suggests that my target classes are somewhat separable in the feature space.</li><li>The C=10 regularization improvement (89%→94%) shows L2 penalty was reducing overfitting effectively</li></ol> |
+| Decision Tree                      | <ol><li>Got 83% accuracy with max depth 5.</li><li>Got 93.4% accuracy with max depth 10.</li><li>Default criterion gini was used but we don't have binary split, using entropy.</li><li>Max depth tuning (5→10) significantly improved performance because obesity classification requires deeper decision paths to capture conditional logic</li></ol>                                                                                                                                                                                                                                    |
+| kNN                                | <ol><li>Model did not perform well with accuracy of 80.8%.</li><li>Struggles because obesity classification exists in high-dimensional space (16 features post-encoding).With many dimensions distances dont help much.</li><li>Increasing K from 5 to 10 only increased accuracy from 80 to 81. </li></ol>                                                                                                                                                                                                                                                                                |
+| Naive Bayes                        | <ol><li>Model did not perform well with accuracy of 50.6%.</li><li>GaussianNB model is not suitable for this dataset.</li><li>GaussianNB assumes feature independence, but our data violates this assumption. Weight and BMI-related features are highly correlated.</li></ol>                                                                                                                                                                                                                                                                                                             |
+| Random Forest ( Ensemble )         | <ol><li>Model performed well with accuracy of 93.8%.</li><li>Hyperparameter tuning improved accuracy slightly.</li><li>Strong performance due to ensemble diversity.</li></ol>                                                                                                                                                                                                                                                                                                                                                                                                             |
+| XGBoost ( Ensemble )               | <ol><li>Model performed best with accuracy of 94.5%.</li><li>Hyperparameter tuning improved accuracy slightly.</li><li>Excels because it uses gradient boosting with sequential error correction. Each tree learns from previous mistakes, making it ideal for complex, non-linear relationships in obesity classification.</li></ol>                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+
+# Conclusion
+
+## XGBoost (94.5% - Best Performer)
+Excels because it uses gradient boosting with sequential error correction. Each tree learns from previous mistakes, making it ideal for complex, non-linear relationships in obesity classification.
+Our dataset has mixed feature types (continuous + categorical) and XGBoost handles this naturally without explicit preprocessing.
+
